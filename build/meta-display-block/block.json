@@ -1,0 +1,68 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "buntywp/meta-display-block",
+  "version": "0.1.0",
+  "title": "Meta Display",
+  "category": "widgets",
+  "icon": "tag",
+  "description": "Example block scaffolded with Create Block tool.",
+  "example": {},
+  "supports": {
+    "html": false,
+    "shadow": true,
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "textAlign": true,
+      "__experimentalFontFamily": true
+    },
+    "color": {
+      "background": true,
+      "text": true,
+      "heading": false
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true,
+      "__experimentalDefaultControls": {
+        "color": true,
+        "radius": true
+      }
+    }
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "default": "Meta Label"
+    },
+    "metaKey": {
+      "type": "string",
+      "default": "_my_meta_key"
+    },
+    "hideLabel": {
+      "type": "boolean",
+      "default": false
+    },
+    "isPreview": {
+      "type": "boolean",
+      "default": false
+    },
+    "isEditorPreview": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "textdomain": "meta-display",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScript": "file:./view.js"
+}

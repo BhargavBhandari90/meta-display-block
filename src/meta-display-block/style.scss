@@ -1,0 +1,14 @@
+.bwp-meta-display-wrap {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.wp-block-create-block-meta-display {
+		// width: 100%;
+		align-items: center;
+
+		&.is-front {
+			width: auto;
+		}
+	}
+}
