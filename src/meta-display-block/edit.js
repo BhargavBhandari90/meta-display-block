@@ -8,14 +8,23 @@ import {
 	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
+import { useState } from '@wordpress/element';
+import ServerSideRender from '@wordpress/server-side-render';
 
 import './editor.scss';
-import { unseen, seen } from '@wordpress/icons';
+import * as wpIcons from '@wordpress/icons';
+import { unseen, seen, media } from '@wordpress/icons';
 import metadata from './block.json';
+import { Modal } from '@wordpress/components';
+import IconPicker from './components/icon-picker';
+import { Icon } from '@wordpress/components';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { label, metaKey, hideLabel, isPreview } = attributes;
-	const { serverSideRender: ServerSideRender } = wp;
+	const { label, metaKey, hideLabel, isPreview, displayIcon, iconName } =
+		attributes;
+	const [ isOpen, setOpen ] = useState( false );
+	const openModal = () => setOpen( true );
+	const closeModal = () => setOpen( false );
 
 	return (
 		<div className="bwp-meta-display-wrap">
@@ -31,6 +40,18 @@ export default function Edit( { attributes, setAttributes } ) {
 							} )
 						}
 					/>
+					{ hideLabel && (
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __( 'Display Icon', 'bhargav-bhandari' ) }
+							checked={ displayIcon }
+							onChange={ ( val ) =>
+								setAttributes( {
+									displayIcon: val,
+								} )
+							}
+						/>
+					) }
 				</PanelBody>
 			</InspectorControls>
 			<div
@@ -49,11 +70,12 @@ export default function Edit( { attributes, setAttributes } ) {
 						attributes={ {
 							...attributes,
 							isEditorPreview: true,
+							iconName: attributes.iconName,
 						} }
 					/>
 				) : (
 					<>
-						{ ! hideLabel && (
+						{ ! hideLabel ? (
 							<>
 								<TextControl
 									className="bwp-meta-label"
@@ -69,6 +91,53 @@ export default function Edit( { attributes, setAttributes } ) {
 									__nextHasNoMarginBottom
 								/>
 								<div>:</div>
+							</>
+						) : (
+							<>
+								{ displayIcon && (
+									<>
+										<div
+											className={ `bwp-icon-display ${
+												iconName ? 'bwp-has-icon' : ''
+											}` }
+										>
+											<Button
+												variant="tertiary"
+												onClick={ openModal }
+												icon={ media }
+												className="bwp-icon-modal-button"
+											></Button>
+											{ iconName && iconName }
+										</div>
+										{ isOpen && (
+											<Modal
+												title="Icon Library"
+												onRequestClose={ closeModal }
+												size="large"
+											>
+												<IconPicker
+													selected={ iconName }
+													onSelect={ (
+														selectedIcon
+													) => {
+														setAttributes( {
+															iconName: (
+																<Icon
+																	icon={
+																		wpIcons[
+																			selectedIcon
+																		]
+																	}
+																/>
+															),
+														} );
+														closeModal();
+													} }
+												/>
+											</Modal>
+										) }
+									</>
+								) }
 							</>
 						) }
 						<SelectControl

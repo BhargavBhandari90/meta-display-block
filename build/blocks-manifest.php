@@ -62,6 +62,14 @@ return array(
 			'isEditorPreview' => array(
 				'type' => 'boolean',
 				'default' => false
+			),
+			'displayIcon' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
+			'iconName' => array(
+				'type' => 'rich-text',
+				'default' => ''
 			)
 		),
 		'textdomain' => 'meta-display',

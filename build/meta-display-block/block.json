@@ -57,6 +57,14 @@
     "isEditorPreview": {
       "type": "boolean",
       "default": false
+    },
+    "displayIcon": {
+      "type": "boolean",
+      "default": false
+    },
+    "iconName": {
+      "type": "rich-text",
+      "default": ""
     }
   },
   "textdomain": "meta-display",
