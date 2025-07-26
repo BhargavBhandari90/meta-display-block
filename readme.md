@@ -10,17 +10,27 @@
 **License:** GPLv2 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
 
-Display custom meta fields in blocks.
+A Gutenberg block to display post meta fields with optional SVG icon.
 
-## Description ##
+## 🎯 Features
 
-Display custom meta fields in blocks.
+- Custom Gutenberg Block
+- Displays post meta values
+- Includes optional SVG icon
+- Supports dynamic alignment (`left`, `center`, `right`)
 
 ## Installation ##
 
 1. Upload the plugin folder to the `/wp-content/plugins/` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Add/Edit post and search for "Display Meta" block
+3. Add/Edit post and search for "Meta Display" block
+
+## Usage
+
+1. Insert the **Meta Display Block** into any post or page.
+2. Select the meta key you want to display.
+3. Optionally add an svg icon.
+4. Adjust text alignment and background from block settings.
 
 ## Demo
 Coming Soon...
