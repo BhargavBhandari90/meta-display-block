@@ -109,8 +109,11 @@ function buntywp_meta_display_block_render( $attributes, $post_id ) {
 	$display_icon = isset( $attributes['displayIcon'] ) ? $attributes['displayIcon'] : false;
 	$icon_name    = isset( $attributes['iconName'] ) ? $attributes['iconName'] : '';
 	$meta_value   = ! empty( $meta_key ) ? get_post_meta( $post_id, $meta_key, true ) : '';
+	$icon_width   = isset( $attributes['iconWidth'] ) ? $attributes['iconWidth'] : '';
 
 	if ( ! empty( $meta_value ) ) {
+
+		echo '<div class="bwp-meta-display-wrap">';
 
 		if ( ! $hide_label && $label ) {
 			echo wp_sprintf(
@@ -118,12 +121,10 @@ function buntywp_meta_display_block_render( $attributes, $post_id ) {
 				'<strong>%s: </strong>',
 				esc_html( $label )
 			);
-		} else {
-			if ( $display_icon && ! empty( $icon_name ) ) {
-				echo '<div class="bwp-icon-display">';
-				echo render_svg_from_react_array( $icon_name );
+		} elseif ( $display_icon && ! empty( $icon_name ) ) {
+				echo '<div class="bwp-icon-display" style="width: ' . esc_attr( $icon_width ) . 'px;">';
+				echo decode_svg( $icon_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo '</div>';
-			}
 		}
 
 		$meta_value = is_array( $meta_value ) ? implode( ', ', $meta_value ) : $meta_value;
@@ -132,38 +133,22 @@ function buntywp_meta_display_block_render( $attributes, $post_id ) {
 		} else {
 			esc_html_e( 'No value found', 'meta-display-block' );
 		}
+
+		echo '</div>'; // end .bwp-meta-display-wrap.
 	}
 }
+/**
+ * Decode SVG from base64.
+ *
+ * @param string $encoded_svg Base64 encoded SVG.
+ *
+ * @return string Decoded SVG.
+ */
+function decode_svg( $encoded_svg ) {
 
-function render_svg_from_react_array( $node ) {
-	if ( ! is_array( $node ) || ! isset( $node['props'] ) ) {
+	if ( empty( $encoded_svg ) ) {
 		return '';
 	}
 
-	$props = $node['props']['icon']['props'];
-
-	if ( isset( $props['children'] ) ) {
-		$path_attr = $props['children'];
-		unset( $props['children'] );
-	}
-
-	$path_all_attr = $path_attr['props'];
-	$path          = '<path ';
-	foreach ( $path_all_attr as $key => $value ) {
-		$path .= esc_attr( camel_to_kebab_case( $key ) ) . '="' . esc_attr( $value ) . '" ';
-	}
-	$path .= '></path>';
-
-	$svg_full = '<svg ';
-
-	foreach ( $props as $key => $value ) {
-		$svg_full .= esc_attr( $key ) . '="' . esc_attr( $value ) . '" aria-hidden="true" focusable="false" width="24" height="24"';
-	}
-	$svg_full .= '>' . $path . '</svg>';
-
-	return $svg_full;
-}
-
-function camel_to_kebab_case( $string ) {
-	return strtolower( preg_replace( '/([a-z])([A-Z])/', '$1-$2', $string ) );
+	return urldecode( base64_decode( $encoded_svg ) );
 }

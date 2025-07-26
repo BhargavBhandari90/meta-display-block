@@ -7,99 +7,140 @@ import {
 	SelectControl,
 	TextControl,
 	ToggleControl,
+	RangeControl,
+	Modal,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import ServerSideRender from '@wordpress/server-side-render';
 
 import './editor.scss';
-import * as wpIcons from '@wordpress/icons';
 import { unseen, seen, media } from '@wordpress/icons';
 import metadata from './block.json';
-import { Modal } from '@wordpress/components';
 import IconPicker from './components/icon-picker';
-import { Icon } from '@wordpress/components';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { label, metaKey, hideLabel, isPreview, displayIcon, iconName } =
-		attributes;
+	const {
+		label,
+		metaKey,
+		hideLabel,
+		isPreview,
+		displayIcon,
+		iconName,
+		iconWidth,
+	} = attributes;
 	const [ isOpen, setOpen ] = useState( false );
 	const openModal = () => setOpen( true );
 	const closeModal = () => setOpen( false );
+	const decodeSvg = ( encodedSvg ) => {
+		return decodeURIComponent( atob( encodedSvg ) );
+	};
 
 	return (
-		<div className="bwp-meta-display-wrap">
-			<InspectorControls>
-				<PanelBody title={ __( 'Setting', 'bhargav-bhandari' ) }>
-					<ToggleControl
-						__nextHasNoMarginBottom
-						label={ __( 'Hide Label', 'bhargav-bhandari' ) }
-						checked={ hideLabel }
-						onChange={ ( val ) =>
-							setAttributes( {
-								hideLabel: val,
-							} )
-						}
-					/>
-					{ hideLabel && (
-						<ToggleControl
-							__nextHasNoMarginBottom
-							label={ __( 'Display Icon', 'bhargav-bhandari' ) }
-							checked={ displayIcon }
-							onChange={ ( val ) =>
-								setAttributes( {
-									displayIcon: val,
-								} )
-							}
-						/>
-					) }
-				</PanelBody>
-			</InspectorControls>
+		<div
+			className={ `bwp-meta-display-block-wrap has-text-align-${ attributes?.style?.typography?.textAlign }` }
+		>
 			<div
 				{ ...useBlockProps( {
 					className: `bwp-meta-row ${
 						isPreview ? 'bwp-meta-preview' : ''
 					}`,
-					style: isPreview
-						? { display: 'block' }
-						: { display: 'flex' },
 				} ) }
 			>
-				{ isPreview ? (
-					<ServerSideRender
-						block={ metadata.name }
-						attributes={ {
-							...attributes,
-							isEditorPreview: true,
-							iconName: attributes.iconName,
-						} }
-					/>
-				) : (
-					<>
-						{ ! hideLabel ? (
+				<InspectorControls>
+					<PanelBody title={ __( 'Setting', 'bhargav-bhandari' ) }>
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __( 'Hide Label', 'bhargav-bhandari' ) }
+							checked={ hideLabel }
+							onChange={ ( val ) =>
+								setAttributes( {
+									hideLabel: val,
+								} )
+							}
+						/>
+						{ hideLabel && (
 							<>
-								<TextControl
-									className="bwp-meta-label"
-									__next40pxDefaultSize
-									placeholder={ __(
-										'Label',
-										'meta-display'
-									) }
-									value={ label }
-									onChange={ ( value ) =>
-										setAttributes( { label: value } )
-									}
+								<ToggleControl
 									__nextHasNoMarginBottom
+									label={ __(
+										'Display Icon',
+										'bhargav-bhandari'
+									) }
+									checked={ displayIcon }
+									onChange={ ( val ) =>
+										setAttributes( {
+											displayIcon: val,
+										} )
+									}
 								/>
-								<div>:</div>
-							</>
-						) : (
-							<>
 								{ displayIcon && (
-									<>
+									<RangeControl
+										__nextHasNoMarginBottom
+										__next40pxDefaultSize
+										help={ __(
+											'Width of the icon in pixels.',
+											'meta-display-block'
+										) }
+										initialPosition={ iconWidth }
+										label={ __(
+											'Icon Width',
+											'meta-display-block'
+										) }
+										max={ 100 }
+										min={ 0 }
+										value={ iconWidth }
+										onChange={ ( value ) =>
+											setAttributes( {
+												iconWidth: value,
+											} )
+										}
+									/>
+								) }
+							</>
+						) }
+					</PanelBody>
+				</InspectorControls>
+				<div>
+					{ isPreview ? (
+						<ServerSideRender
+							block={ metadata.name }
+							attributes={ {
+								...attributes,
+								isEditorPreview: true,
+								iconName: attributes.iconName,
+							} }
+						/>
+					) : (
+						<div className="bwp-meta-display-wrap">
+							{ ! hideLabel ? (
+								<>
+									<TextControl
+										className="bwp-meta-label"
+										__next40pxDefaultSize
+										placeholder={ __(
+											'Label',
+											'meta-display'
+										) }
+										value={ label }
+										onChange={ ( value ) =>
+											setAttributes( { label: value } )
+										}
+										__nextHasNoMarginBottom
+									/>
+									<span>{ ':' }</span>
+								</>
+							) : (
+								<>
+									{ displayIcon && (
 										<div
 											className={ `bwp-icon-display ${
 												iconName ? 'bwp-has-icon' : ''
 											}` }
+											style={
+												iconName
+													? { width: iconWidth }
+													: {}
+											}
 										>
 											<Button
 												variant="tertiary"
@@ -107,59 +148,72 @@ export default function Edit( { attributes, setAttributes } ) {
 												icon={ media }
 												className="bwp-icon-modal-button"
 											></Button>
-											{ iconName && iconName }
-										</div>
-										{ isOpen && (
-											<Modal
-												title="Icon Library"
-												onRequestClose={ closeModal }
-												size="large"
-											>
-												<IconPicker
-													selected={ iconName }
-													onSelect={ (
-														selectedIcon
-													) => {
-														setAttributes( {
-															iconName: (
-																<Icon
-																	icon={
-																		wpIcons[
-																			selectedIcon
-																		]
-																	}
-																/>
-															),
-														} );
-														closeModal();
+											{ iconName && (
+												<div
+													className="bwp-icon-svg-wrap"
+													style={
+														iconName
+															? {
+																	width: iconWidth,
+															  }
+															: {}
+													}
+													dangerouslySetInnerHTML={ {
+														__html: decodeSvg(
+															iconName
+														),
 													} }
-												/>
-											</Modal>
-										) }
-									</>
-								) }
-							</>
-						) }
-						<SelectControl
-							className="bwp-meta-key"
-							__next40pxDefaultSize
-							__nextHasNoMarginBottom
-							value={ metaKey }
-							options={ [
-								{ label: '-- Select a Meta Key --', value: '' },
-								...MetaDisplayBlockData.metaKeys.map(
-									( key ) => ( {
-										label: key,
-										value: key,
-									} )
-								),
-							] }
-							onChange={ ( value ) =>
-								setAttributes( { metaKey: value } )
-							}
-						/>
-					</>
-				) }
+												></div>
+											) }
+											{ isOpen && (
+												<Modal
+													title="Icon Library"
+													onRequestClose={
+														closeModal
+													}
+													size="large"
+												>
+													<IconPicker
+														onSelect={ (
+															selectedIcon
+														) => {
+															setAttributes( {
+																iconName:
+																	selectedIcon,
+															} );
+															closeModal();
+														} }
+													/>
+												</Modal>
+											) }
+										</div>
+									) }
+								</>
+							) }
+							<SelectControl
+								className="bwp-meta-key"
+								__next40pxDefaultSize
+								__nextHasNoMarginBottom
+								value={ metaKey }
+								options={ [
+									{
+										label: '-- Select a Meta Key --',
+										value: '',
+									},
+									...MetaDisplayBlockData.metaKeys.map(
+										( key ) => ( {
+											label: key,
+											value: key,
+										} )
+									),
+								] }
+								onChange={ ( value ) =>
+									setAttributes( { metaKey: value } )
+								}
+							/>
+						</div>
+					) }
+				</div>
 			</div>
 			{ ! isPreview ? (
 				<Button

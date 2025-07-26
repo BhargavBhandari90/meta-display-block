@@ -63,8 +63,12 @@
       "default": false
     },
     "iconName": {
-      "type": "rich-text",
+      "type": "string",
       "default": ""
+    },
+    "iconWidth": {
+      "type": "number",
+      "default": 24
     }
   },
   "textdomain": "meta-display",

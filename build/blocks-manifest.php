@@ -68,8 +68,12 @@ return array(
 				'default' => false
 			),
 			'iconName' => array(
-				'type' => 'rich-text',
+				'type' => 'string',
 				'default' => ''
+			),
+			'iconWidth' => array(
+				'type' => 'number',
+				'default' => 24
 			)
 		),
 		'textdomain' => 'meta-display',

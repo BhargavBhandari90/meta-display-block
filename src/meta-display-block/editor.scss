@@ -1,31 +1,19 @@
-.bwp-meta-display-wrap {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.wp-block-buntywp-meta-display-block {
 
-	.wp-block-buntywp-meta-display-block {
-		width: 80%;
-		align-items: center;
-		gap: 10px;
+	.bwp-icon-display {
+		position: relative;
 
-		&.bwp-meta-preview {
-			display: block;
-		}
+		&.bwp-has-icon {
 
-		.bwp-icon-display {
-			position: relative;
+			.bwp-icon-modal-button {
+				position: absolute;
+				display: none;
+			}
 
-			&.bwp-has-icon {
+			&:hover {
 
 				.bwp-icon-modal-button {
-					position: absolute;
-					display: none;
-				}
-
-				&:hover {
-					.bwp-icon-modal-button {
-						display: block;
-					}
+					display: block;
 				}
 			}
 		}

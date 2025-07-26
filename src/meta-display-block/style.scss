@@ -1,14 +1,34 @@
-.bwp-meta-display-wrap {
+.bwp-meta-display-block-wrap {
 	display: flex;
-	justify-content: space-between;
+	gap: 10px;
 	align-items: center;
 
-	.wp-block-buntywp-meta-display-block {
-		// width: 100%;
-		// align-items: center;
+	&.has-text-align-left {
+		justify-content: left;
+	}
 
-		&.is-front {
-			width: auto;
+	&.has-text-align-right {
+		justify-content: right;
+	}
+
+	&.has-text-align-center {
+		justify-content: center;
+	}
+
+	.wp-block-buntywp-meta-display-block {
+		display: inline-block;
+		gap: 10px;
+		align-items: center;
+
+		.bwp-meta-display-wrap {
+			display: flex;
+			gap: 10px;
+			align-items: center;
+		}
+
+		.bwp-icon-display {
+			width: 24px;
+			display: flex;
 		}
 	}
 }

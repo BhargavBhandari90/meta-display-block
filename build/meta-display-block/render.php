@@ -18,7 +18,7 @@ if ( ! empty( $attributes['isEditorPreview'] ) ) {
 }
 
 ?>
-<div class="bwp-meta-display-wrap">
+<div class="bwp-meta-display-block-wrap has-text-align-<?php echo isset( $attributes['style']['typography']['textAlign'] ) ? esc_attr( $attributes['style']['typography']['textAlign'] ) : ''; ?>">
 	<div <?php echo wp_kses_data( get_block_wrapper_attributes( array( 'class' => 'bwp-meta-row is-front' ) ) ); ?>>
 		<?php buntywp_meta_display_block_render( $attributes, $current_post_id ); ?>
 	</div>
