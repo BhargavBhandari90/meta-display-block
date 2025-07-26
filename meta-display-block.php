@@ -123,7 +123,7 @@ function buntywp_meta_display_block_render( $attributes, $post_id ) {
 			);
 		} elseif ( $display_icon && ! empty( $icon_name ) ) {
 				echo '<div class="bwp-icon-display" style="width: ' . esc_attr( $icon_width ) . 'px;">';
-				echo decode_svg( $icon_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo buntywp_meta_display_decode_svg( $icon_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo '</div>';
 		}
 
@@ -144,7 +144,7 @@ function buntywp_meta_display_block_render( $attributes, $post_id ) {
  *
  * @return string Decoded SVG.
  */
-function decode_svg( $encoded_svg ) {
+function buntywp_meta_display_decode_svg( $encoded_svg ) {
 
 	if ( empty( $encoded_svg ) ) {
 		return '';
