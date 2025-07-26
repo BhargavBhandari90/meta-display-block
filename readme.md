@@ -33,7 +33,9 @@ A Gutenberg block to display post meta fields with optional SVG icon.
 4. Adjust text alignment and background from block settings.
 
 ## Demo
-Coming Soon...
+https://github.com/user-attachments/assets/cd76cd4d-3d48-4644-ba01-a95e9ec70bed
+
+
 
 
 ## Prerequisites
