@@ -122,13 +122,8 @@ export default function Edit( { attributes, setAttributes } ) {
 													) => {
 														setAttributes( {
 															iconName: (
-																<Icon
-																	icon={
-																		wpIcons[
-																			selectedIcon
-																		]
-																	}
-																/>
+																selectedIcon ||
+																''
 															),
 														} );
 														closeModal();
