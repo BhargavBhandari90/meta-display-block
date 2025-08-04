@@ -47,10 +47,10 @@ export default function Edit( { attributes, setAttributes } ) {
 				} ) }
 			>
 				<InspectorControls>
-					<PanelBody title={ __( 'Setting', 'bhargav-bhandari' ) }>
+					<PanelBody title={ __( 'Setting', 'meta-display-block' ) }>
 						<ToggleControl
 							__nextHasNoMarginBottom
-							label={ __( 'Hide Label', 'bhargav-bhandari' ) }
+							label={ __( 'Hide Label', 'meta-display-block' ) }
 							checked={ hideLabel }
 							onChange={ ( val ) =>
 								setAttributes( {
@@ -64,7 +64,7 @@ export default function Edit( { attributes, setAttributes } ) {
 									__nextHasNoMarginBottom
 									label={ __(
 										'Display Icon',
-										'bhargav-bhandari'
+										'meta-display-block'
 									) }
 									checked={ displayIcon }
 									onChange={ ( val ) =>

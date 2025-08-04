@@ -1,3 +1,4 @@
+import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { TextareaControl, Button } from '@wordpress/components';
 
@@ -16,19 +17,19 @@ const IconPicker = ( { onSelect } ) => {
 		<>
 			<TextareaControl
 				__nextHasNoMarginBottom
-				label="SVG Code"
+				label={ __( 'SVG Code', 'meta-display-block' ) }
 				value={ decodeSvg( customSvg ) }
 				onChange={ ( value ) => setCustomSvg( encodeSvg( value ) ) }
-				help="Paste your SVG code here"
+				help={ __( 'Paste your SVG code here', 'meta-display-block' ) }
 			/>
 			<Button
 				variant="primary"
 				onClick={ () => {
 					onSelect( customSvg );
 				} }
-			>
-				Set Icon
-			</Button>
+				label={ __( 'Set Icon', 'meta-display-block' ) }
+				text={ __( 'Set Icon', 'meta-display-block' ) }
+			></Button>
 		</>
 	);
 };

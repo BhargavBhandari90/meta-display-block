@@ -5,11 +5,11 @@ return array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'name' => 'buntywp/meta-display-block',
-		'version' => '0.1.0',
+		'version' => '1.0.0',
 		'title' => 'Meta Display',
 		'category' => 'widgets',
 		'icon' => 'tag',
-		'description' => 'Example block scaffolded with Create Block tool.',
+		'description' => 'A Gutenberg block to display post meta fields with optional SVG icon.',
 		'example' => array(
 			
 		),
