@@ -5,7 +5,7 @@
 **Tags:** block, meta, metadata, custom-field, blocks  
 **Requires at least:** 6.7  
 **Tested up to:** 7.0  
-**Stable tag:** 1.0.0  
+**Stable tag:** 1.0.1  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html  
@@ -64,5 +64,8 @@ Report here
 
 ## Changelog ##
 
+### 1.0.1 ###
+* Fix security issue
+
 ### 1.0.0 ###
-* Initial Release.
+* Initial Release
