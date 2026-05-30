@@ -123,7 +123,7 @@ function buntywp_meta_display_block_render( $attributes, $post_id ) {
 			);
 		} elseif ( $display_icon && ! empty( $icon_name ) ) {
 				echo '<div class="bwp-icon-display" style="width: ' . esc_attr( $icon_width ) . 'px;">';
-				echo buntywp_meta_display_decode_svg( $icon_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo buntywp_meta_display_sanitize_svg( buntywp_meta_display_decode_svg( $icon_name ) );
 				echo '</div>';
 		}
 
@@ -151,4 +151,188 @@ function buntywp_meta_display_decode_svg( $encoded_svg ) {
 	}
 
 	return urldecode( base64_decode( $encoded_svg ) );
+}
+
+/**
+ * Sanitize an SVG string using wp_kses with a safe allowlist.
+ * Strips event handlers (onload, onclick, etc.) and <script> tags.
+ *
+ * @param string $svg Raw SVG markup.
+ *
+ * @return string Sanitized SVG markup.
+ */
+function buntywp_meta_display_sanitize_svg( $svg ) {
+
+	if ( empty( $svg ) ) {
+		return '';
+	}
+
+	$allowed_tags = array(
+		'svg'            => array(
+			'xmlns'           => true,
+			'xmlns:xlink'     => true,
+			'width'           => true,
+			'height'          => true,
+			'viewbox'         => true,
+			'aria-hidden'     => true,
+			'role'            => true,
+			'focusable'       => true,
+			'fill'            => true,
+			'stroke'          => true,
+			'stroke-width'    => true,
+			'class'           => true,
+			'style'           => true,
+		),
+		'g'              => array(
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+			'transform'    => true,
+			'class'        => true,
+			'style'        => true,
+		),
+		'path'           => array(
+			'd'            => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+			'transform'    => true,
+			'class'        => true,
+			'style'        => true,
+		),
+		'circle'         => array(
+			'cx'           => true,
+			'cy'           => true,
+			'r'            => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+			'transform'    => true,
+			'class'        => true,
+			'style'        => true,
+		),
+		'rect'           => array(
+			'x'            => true,
+			'y'            => true,
+			'width'        => true,
+			'height'       => true,
+			'rx'           => true,
+			'ry'           => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+			'transform'    => true,
+			'class'        => true,
+			'style'        => true,
+		),
+		'ellipse'        => array(
+			'cx'           => true,
+			'cy'           => true,
+			'rx'           => true,
+			'ry'           => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+			'transform'    => true,
+			'class'        => true,
+			'style'        => true,
+		),
+		'line'           => array(
+			'x1'           => true,
+			'y1'           => true,
+			'x2'           => true,
+			'y2'           => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+			'transform'    => true,
+			'class'        => true,
+			'style'        => true,
+		),
+		'polyline'       => array(
+			'points'       => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+			'transform'    => true,
+			'class'        => true,
+			'style'        => true,
+		),
+		'polygon'        => array(
+			'points'       => true,
+			'fill'         => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+			'transform'    => true,
+			'class'        => true,
+			'style'        => true,
+		),
+		'text'           => array(
+			'x'            => true,
+			'y'            => true,
+			'dx'           => true,
+			'dy'           => true,
+			'font-size'    => true,
+			'font-family'  => true,
+			'fill'         => true,
+			'transform'    => true,
+			'class'        => true,
+			'style'        => true,
+		),
+		'defs'           => array(),
+		'symbol'         => array(
+			'id'      => true,
+			'viewbox' => true,
+			'width'   => true,
+			'height'  => true,
+		),
+		'use'            => array(
+			'href'        => true,
+			'xlink:href'  => true,
+			'x'           => true,
+			'y'           => true,
+			'width'       => true,
+			'height'      => true,
+			'transform'   => true,
+		),
+		'clippath'       => array(
+			'id'        => true,
+			'transform' => true,
+		),
+		'mask'           => array(
+			'id'     => true,
+			'x'      => true,
+			'y'      => true,
+			'width'  => true,
+			'height' => true,
+		),
+		'lineargradient' => array(
+			'id'                => true,
+			'x1'               => true,
+			'y1'               => true,
+			'x2'               => true,
+			'y2'               => true,
+			'gradientunits'    => true,
+			'gradienttransform'=> true,
+		),
+		'radialgradient' => array(
+			'id'               => true,
+			'cx'               => true,
+			'cy'               => true,
+			'r'                => true,
+			'fx'               => true,
+			'fy'               => true,
+			'gradientunits'    => true,
+			'gradienttransform'=> true,
+		),
+		'stop'           => array(
+			'offset'     => true,
+			'stop-color' => true,
+			'stop-opacity'=> true,
+			'style'      => true,
+		),
+		'title'          => array(),
+		'desc'           => array(),
+	);
+
+	return wp_kses( $svg, $allowed_tags );
 }
